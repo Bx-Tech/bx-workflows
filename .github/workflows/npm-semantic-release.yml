@@ -15,7 +15,7 @@ permissions:
   packages: write
 
 jobs:
-  lint-and-test:
+  npm-release:
     runs-on: ubuntu-latest
     if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
