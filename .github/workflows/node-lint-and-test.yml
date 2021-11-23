@@ -1,5 +1,8 @@
 on:
   workflow_call:
+    secrets: 
+      GH_READ_PACKAGES_TOKEN:
+        required: true
 
 permissions:
   contents: read
