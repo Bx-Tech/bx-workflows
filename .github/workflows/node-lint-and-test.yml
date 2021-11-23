@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 permissions:
-  content: read
+  contents: read
 
 jobs:
   lint-and-test:
