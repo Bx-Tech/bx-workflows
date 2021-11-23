@@ -16,9 +16,11 @@ permissions:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
-
+    if: ${{ github.actor != 'dependabot[bot]' || github.event_name == 'pull_request_target' }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.head_ref }} # checkout the head if we have pull_request_target
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
