@@ -13,13 +13,12 @@ on:
     secrets:
       GH_READ_PACKAGES_TOKEN:
         required: true
-      repoToken:
-        required: true
       firebaseServiceAccount:
         required: true
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   build-and-deploy:
@@ -49,7 +48,7 @@ jobs:
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ github.token }}
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.firebaseServiceAccount }}
           channelId: ${{ inputs.channelId }}
           projectId: ${{ inputs.projectId }}
