@@ -16,10 +16,6 @@ on:
       firebaseServiceAccount:
         required: true
 
-permissions:
-  contents: read
-  pull-requests: write
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
