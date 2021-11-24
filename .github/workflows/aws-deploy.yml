@@ -13,6 +13,14 @@ on:
         description: 'Cloudfront distribution id to clear cache on'
         type: string
         required: false
+      appSyncEndPoint:
+        description: 'Value for NEXT_PUBLIC_APPSYNC_ENDPOINT. Not set if appSyncAPIKey left blank'
+        type: string
+        required: false
+      appSyncAPIKey:
+        description: 'Value for NEXT_PUBLIC_APPSYNC_API_KEY. Not set if left blank'
+        type: string
+        required: false
     secrets:
       GH_READ_PACKAGES_TOKEN:
         required: true
@@ -67,11 +75,22 @@ jobs:
           parameters: /secrets/apps/sentry-auth,/secrets/apps/${{ inputs.appName }}/prismic
       
       - name: Build
+        if: ${{ !inputs.appSyncAPIKey }}
         run: npm run build
         env:
           CI: true
           SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
           PRISMIC_TOKEN: ${{ env.PRISMIC_TOKEN }}
+
+      - name: Build with Config
+        if: ${{ inputs.appSyncAPIKey }}
+        run: npm run build
+        env:
+          CI: true
+          SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
+          PRISMIC_TOKEN: ${{ env.PRISMIC_TOKEN }}
+          NEXT_PUBLIC_APPSYNC_ENDPOINT: ${{ inputs.appSyncEndPoint }}
+          NEXT_PUBLIC_APPSYNC_API_KEY: ${{ inputs.appSyncAPIKey }}
       
       - name: Export site
         run: npm run export
