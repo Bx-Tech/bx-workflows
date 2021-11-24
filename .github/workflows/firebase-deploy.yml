@@ -1,14 +1,19 @@
 on:
   workflow_call:
     inputs:
-      FIREBASE_PROJECT_ID:
+      projectId:
         description: 'Firebase Project to deploy to'
         required: true
+        type: string
+      channelId:
+        description: 'Channel - leave blank for preview'
+        required: false
+        default: ''
         type: string
     secrets: 
       GH_READ_PACKAGES_TOKEN:
         required: true
-      FIREBASE_SERVICE_ACCOUNT_KEY:
+      firebaseServiceAccount:
         required: true
 
 permissions:
@@ -43,6 +48,6 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
-          channelId: live
-          projectId: ${{ inputs.FIREBASE_PROJECT_ID }}
+          firebaseServiceAccount: ${{ secrets.firebaseServiceAccount }}
+          channelId: ${{ inputs.channelId }}
+          projectId: ${{ inputs.projectId }}
