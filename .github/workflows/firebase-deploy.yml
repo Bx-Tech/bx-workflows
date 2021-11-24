@@ -49,7 +49,7 @@ jobs:
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ secrets.repoToken }}
+          repoToken: ${{ github.token }}
           firebaseServiceAccount: ${{ secrets.firebaseServiceAccount }}
           channelId: ${{ inputs.channelId }}
           projectId: ${{ inputs.projectId }}
