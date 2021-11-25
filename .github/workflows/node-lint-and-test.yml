@@ -44,3 +44,5 @@ jobs:
       - name: Run Tests
         run: npm run test
         working-directory: ${{ inputs.working-directory }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
