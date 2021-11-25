@@ -90,7 +90,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.ARTIFACTS_SECRET_KEY }}
           aws-region: eu-west-2
 
-      - name: Deploy site to dev
+      - name: Deploy site
         run: aws s3 sync --acl public-read ./out s3://${{ inputs.bucketName }}
       
       - name: Clear Cloudfront cache
