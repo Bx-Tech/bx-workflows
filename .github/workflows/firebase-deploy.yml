@@ -46,6 +46,8 @@ jobs:
       
       - name: Prepare Firebase
         run: npm run prepare-firebase
+        env:
+          NEXT_PUBLIC_PROJECT: ${{ inputs.projectId }}
       
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
