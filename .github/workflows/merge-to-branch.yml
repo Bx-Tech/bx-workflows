@@ -31,5 +31,5 @@ jobs:
           git fetch
           git checkout --progress --force -B ${{ inputs.to_branch }} refs/remotes/origin/${{ inputs.to_branch }}
           git pull
-          git merge -X theirs ${{ inputs.from_branch }} --allow-unrelated-histories
+          git merge -X theirs ${{ inputs.from_branch }}
           git push
