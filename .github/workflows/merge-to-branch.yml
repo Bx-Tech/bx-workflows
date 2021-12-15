@@ -5,9 +5,6 @@ on:
         description: 'Destination branch to merge to (ours)'
         required: true
         type: string
-    secrets: 
-      GH_TOKEN:
-        required: true  
 permissions:
   contents: write
 
@@ -20,7 +17,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
-          token: ${{ secrets.GH_TOKEN }}
 
       - name: Merge ${{ github.sha }} -> ${{ inputs.to_branch }}
         run: |
