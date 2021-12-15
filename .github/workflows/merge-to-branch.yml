@@ -1,17 +1,10 @@
 on:
   workflow_call:
     inputs:
-      from_branch:
-        description: 'Branch containing the changes to merge (theirs)'
-        required: true
-        type: string
       to_branch:
         description: 'Destination branch to merge to (ours)'
         required: true
         type: string
-    secrets: 
-      GH_WRITE_PACKAGES_TOKEN:
-        required: true
 
 permissions:
   contents: write
@@ -20,16 +13,19 @@ jobs:
   merge-to-staging:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout Code
+        uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GH_WRITE_PACKAGES_TOKEN }}
+          fetch-depth: 0
+          ref: ${{ github.sha }}
 
-      - name: Merge ${{ inputs.from_branch }} -> ${{ inputs.to_branch }}
+      - name: Merge ${{ github.sha }} -> ${{ inputs.to_branch }}
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git fetch
           git checkout --progress --force -B ${{ inputs.to_branch }} refs/remotes/origin/${{ inputs.to_branch }}
-          git pull
-          git merge -X theirs ${{ inputs.from_branch }} --allow-unrelated-histories
+          git merge ${{ github.sha }}
+          git status
           git push
+          git status
