@@ -6,7 +6,7 @@ on:
         required: true
         type: string
     secrets:
-      GH_WRITE_REPO_TOKEN:
+      GH_REPO_WRITE_TOKEN:
         required: true
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
-          token: ${{ secrets.GH_WRITE_REPO_TOKEN }}
+          token: ${{ secrets.GH_REPO_WRITE_TOKEN }}
 
       - name: Merge ${{ github.sha }} -> ${{ inputs.to_branch }}
         run: |
