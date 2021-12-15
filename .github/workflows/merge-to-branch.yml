@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
-          token: ${{ GH_WRITE_REPO_TOKEN }}
+          token: ${{ secrets.GH_WRITE_REPO_TOKEN }}
 
       - name: Merge ${{ github.sha }} -> ${{ inputs.to_branch }}
         run: |
