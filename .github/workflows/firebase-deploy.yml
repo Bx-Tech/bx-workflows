@@ -51,11 +51,11 @@ jobs:
 
       - name: Build
         run: npm run build:${{ inputs.environment }}
+        env:
+          NEXT_PUBLIC_PROJECT: ${{ inputs.projectId }}
 
       - name: Export for Firebase
         run: npm run export-firebase
-        env:
-          NEXT_PUBLIC_PROJECT: ${{ inputs.projectId }}
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
