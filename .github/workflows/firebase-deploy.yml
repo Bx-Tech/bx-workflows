@@ -2,14 +2,19 @@ on:
   workflow_call:
     inputs:
       projectId:
-        description: 'Firebase Project to deploy to'
+        description: "Firebase Project to deploy to"
         required: true
         type: string
       channelId:
-        description: 'Channel - leave blank for preview'
+        description: "Channel - leave blank for preview"
         required: false
-        default: ''
+        default: ""
         type: string
+      environment:
+        description: "Environment target to build"
+        default: "production"
+        type: string
+        required: false
     secrets:
       GH_READ_PACKAGES_TOKEN:
         required: true
@@ -33,22 +38,25 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@bx-looop'
-      
+          node-version: "14"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@bx-looop"
+
       - name: Install dependencies
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
-      
-      - name: Prepare Firebase
-        run: npm run prepare-firebase
+
+      - name: Build
+        run: npm run build:${{ inputs.environment }}
+
+      - name: Export for Firebase
+        run: npm run export-firebase
         env:
           NEXT_PUBLIC_PROJECT: ${{ inputs.projectId }}
-      
+
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
