@@ -14,7 +14,8 @@ permissions:
   contents: write
   packages: write
   issues: write
-
+env: # <--- here
+  NEXT_PUBLIC_FIREBASE_TOKEN: ${{ secrets.NEXT_PUBLIC_FIREBASE_TOKEN }} #
 jobs:
   npm-release:
     runs-on: ubuntu-latest
