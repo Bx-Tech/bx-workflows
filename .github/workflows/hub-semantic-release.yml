@@ -30,12 +30,20 @@ jobs:
           cache-dependency-path: "**/package-lock.json"
           registry-url: "https://npm.pkg.github.com"
           scope: "@bx-looop"
-
       - name: Install dependencies
         run: yarn install
-        working-directory: ${{ inputs.working-directory }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.GH_READ_PACKAGES_TOKEN}}
+      - name: add env variables
+        run: |
+          touch .env.local
+          echo NEXT_PUBLIC_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_MAPS_API_KEY }} >> .env
+          echo MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_MAPS_API_KEY }} >> .env
+          echo NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }} >> .env
+          echo NEXT_PUBLIC_TAG_MANAGER_GTMID=${{ secrets.NEXT_PUBLIC_TAG_MANAGER_GTMID }} >> .env
+          echo NEXT_PUBLIC_HOTJAR_SITE_ID=${{ secrets.NEXT_PUBLIC_HOTJAR_SITE_ID }} >> .env
+          echo NEXT_PUBLIC_HOTJAR_SITE_HJSV=${{ secrets.NEXT_PUBLIC_HOTJAR_SITE_HJSV }} >> .env
+          cat .env.local
 
       - name: Run Build
         run: yarn build
