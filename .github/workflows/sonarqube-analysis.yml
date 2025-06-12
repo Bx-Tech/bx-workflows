@@ -1,0 +1,35 @@
+name: SonarQube Analyze
+
+on:
+  workflow_call:
+    inputs:
+      coverage-command:
+        required: true
+        type: string
+      coverage-path:
+        required: false
+        default: "./coverage/lcov.info"
+        type: string
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history to get the full coverage report
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run tests and generate coverage
+        run: ${{ inputs.coverage-command }}
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.javascript.lcov.reportPaths=${{ inputs.coverage-path }}
