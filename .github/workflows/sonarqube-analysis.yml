@@ -10,17 +10,20 @@ on:
         required: false
         default: "./coverage/lcov.info"
         type: string
+    secrets:
+      NPM_GRANULAR_TOKEN:
+        required: true
 
 jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Fetch all history to get the full coverage report
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
