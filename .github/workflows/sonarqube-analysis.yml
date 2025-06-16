@@ -52,3 +52,4 @@ jobs:
         with:
           args: >
             -Dsonar.javascript.lcov.reportPaths=${{ inputs.coverage-path }}
+            -Dsonar.javascript.node.maxspace=4096
