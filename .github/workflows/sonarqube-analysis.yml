@@ -23,9 +23,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          registry-url: "https://registry.npmjs.org"
+          scope: "@bxtech"
+          cache: "yarn"
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile --immutable
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GRANULAR_TOKEN }}
 
       - name: Run tests and generate coverage
         run: ${{ inputs.coverage-command }}
