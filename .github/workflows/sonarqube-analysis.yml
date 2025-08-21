@@ -14,6 +14,10 @@ on:
         required: false
         type: string
         default: "22"
+      ignore-scripts:
+        required: false
+        type: boolean
+        default: true
     secrets:
       NPM_GRANULAR_TOKEN:
         required: true
@@ -39,10 +43,16 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --immutable --ignore-scripts
+        run: |
+          if [ "${{ inputs.ignore-scripts }}" = 'true' ]; then
+            export YARN_ENABLE_SCRIPTS=0
+            yarn install --frozen-lockfile --immutable --ignore-scripts
+          else
+            export YARN_ENABLE_SCRIPTS=1
+            yarn install --frozen-lockfile --immutable
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_GRANULAR_TOKEN }}
-          YARN_ENABLE_SCRIPTS: 0
 
       - name: Run tests and generate coverage
         run: ${{ inputs.coverage-command }}
