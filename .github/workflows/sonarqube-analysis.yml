@@ -35,22 +35,23 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --immutable
+        run: yarn install --frozen-lockfile --immutable --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_GRANULAR_TOKEN }}
+          YARN_ENABLE_SCRIPTS: 0
 
       - name: Run tests and generate coverage
         run: ${{ inputs.coverage-command }}
         env:
-          NODE_OPTIONS: --max-old-space-size=4096
+          NODE_OPTIONS: --max-old-space-size=6144
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          NODE_OPTIONS: --max-old-space-size=4096
+          NODE_OPTIONS: --max-old-space-size=6144
         with:
           args: >
             -Dsonar.javascript.lcov.reportPaths=${{ inputs.coverage-path }}
-            -Dsonar.javascript.node.maxspace=4096
+            -Dsonar.javascript.node.maxspace=6144
