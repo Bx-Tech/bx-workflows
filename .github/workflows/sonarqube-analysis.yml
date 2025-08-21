@@ -10,6 +10,10 @@ on:
         required: false
         default: "./coverage/lcov.info"
         type: string
+      node_version:
+        required: false
+        type: string
+        default: "22"
     secrets:
       NPM_GRANULAR_TOKEN:
         required: true
@@ -26,10 +30,10 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history to get the full coverage report
 
-      - name: Set up Node.js v22
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ inputs.node_version }}
           registry-url: "https://registry.npmjs.org"
           scope: "@bxtech"
           cache: "yarn"
